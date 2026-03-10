@@ -1,24 +1,44 @@
+import java.util.HashMap;
+
 public class HotelBookingManagementSystem {
+
+    // UC2 — Room Inventory Data Structure
+    static HashMap<String, Integer> roomInventory = new HashMap<>();
 
     public static void main(String[] args) {
 
-        // Application Name
+        // UC1 — Application Entry & Welcome Message
         System.out.println("======================================");
         System.out.println("   HOTEL BOOKING MANAGEMENT SYSTEM");
         System.out.println("======================================");
-
-        // Version Info
         System.out.println("Version: 1.0");
+        System.out.println("System initialized successfully.\n");
 
-        // Description
-        System.out.println("This system demonstrates how core Java");
-        System.out.println("data structures are used in real-world");
-        System.out.println("hotel booking applications.");
+        // UC2 — Initialize Room Inventory
+        initializeRooms();
 
-        // Startup Message
-        System.out.println("\nSystem initialized successfully.");
+        // Display Available Rooms
+        displayRooms();
+    }
 
-        // Next stage placeholder
-        System.out.println("Ready for booking operations...");
+    // UC2 — Initialize Room Types
+    static void initializeRooms() {
+
+        roomInventory.put("Single Room", 10);
+        roomInventory.put("Double Room", 7);
+        roomInventory.put("Deluxe Room", 5);
+        roomInventory.put("Suite", 2);
+
+        System.out.println("Room inventory initialized successfully.\n");
+    }
+
+    // UC2 — Display Room Availability
+    static void displayRooms() {
+
+        System.out.println("Available Room Types:");
+
+        for (String roomType : roomInventory.keySet()) {
+            System.out.println(roomType + " : " + roomInventory.get(roomType) + " rooms available");
+        }
     }
 }
