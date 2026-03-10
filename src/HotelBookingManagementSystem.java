@@ -1,9 +1,12 @@
-import java.util.HashMap;
+import java.util.*;
 
 public class HotelBookingManagementSystem {
 
     // UC2 — Room Inventory
     static HashMap<String, Integer> roomInventory = new HashMap<>();
+
+    // UC5 — Booking Request Queue
+    static Queue<String> bookingRequests = new LinkedList<>();
 
     public static void main(String[] args) {
 
@@ -20,19 +23,21 @@ public class HotelBookingManagementSystem {
         // UC2 — Display Inventory
         displayRooms();
 
-        // UC3 — Booking Simulation
-        System.out.println("\nBooking Request: 1 Deluxe Room");
-
-        if (bookRoom("Deluxe Room")) {
-            System.out.println("Booking successful.");
-        } else {
-            System.out.println("Booking failed.");
-        }
-
         // UC4 — Room Search
-        System.out.println("\nRoom Search Result:");
+        System.out.println("\nRoom Search:");
         searchRoom("Suite");
 
+        // UC5 — Add Booking Requests
+        System.out.println("\nAdding Booking Requests...");
+        addBookingRequest("Single Room");
+        addBookingRequest("Deluxe Room");
+        addBookingRequest("Suite");
+
+        // Process Requests
+        System.out.println("\nProcessing Booking Requests...");
+        processBookingRequests();
+
+        // Final Inventory
         System.out.println("\nUpdated Room Inventory:");
         displayRooms();
     }
@@ -62,21 +67,20 @@ public class HotelBookingManagementSystem {
     static boolean bookRoom(String roomType) {
 
         if (!roomInventory.containsKey(roomType)) {
-            System.out.println("Invalid room type.");
             return false;
         }
 
-        int availableRooms = roomInventory.get(roomType);
+        int available = roomInventory.get(roomType);
 
-        if (availableRooms > 0) {
-            roomInventory.put(roomType, availableRooms - 1);
+        if (available > 0) {
+            roomInventory.put(roomType, available - 1);
             return true;
         }
 
         return false;
     }
 
-    // UC4 — Room Search & Availability Check
+    // UC4 — Room Search
     static void searchRoom(String roomType) {
 
         if (!roomInventory.containsKey(roomType)) {
@@ -87,9 +91,33 @@ public class HotelBookingManagementSystem {
         int available = roomInventory.get(roomType);
 
         if (available > 0) {
-            System.out.println(roomType + " is available. Rooms left: " + available);
+            System.out.println(roomType + " available. Rooms left: " + available);
         } else {
-            System.out.println(roomType + " is currently fully booked.");
+            System.out.println(roomType + " fully booked.");
+        }
+    }
+
+    // UC5 — Add Booking Request
+    static void addBookingRequest(String roomType) {
+
+        bookingRequests.add(roomType);
+        System.out.println("Booking request added for: " + roomType);
+    }
+
+    // UC5 — Process Booking Requests
+    static void processBookingRequests() {
+
+        while (!bookingRequests.isEmpty()) {
+
+            String request = bookingRequests.poll();
+
+            System.out.println("Processing request for: " + request);
+
+            if (bookRoom(request)) {
+                System.out.println("Booking successful for " + request);
+            } else {
+                System.out.println("Booking failed for " + request + " (No rooms available)");
+            }
         }
     }
 }
