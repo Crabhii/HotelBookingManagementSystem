@@ -14,10 +14,23 @@ public class HotelBookingManagementSystem {
         System.out.println("Version: 1.0");
         System.out.println("System initialized successfully.\n");
 
-        // UC2 — Initialize Room Inventory
+        // UC2 — Initialize Rooms
         initializeRooms();
 
-        // Display Available Rooms
+        // UC2 — Display Rooms
+        displayRooms();
+
+        // UC3 — Simulated Booking Request
+        System.out.println("\nBooking Request: 1 Deluxe Room");
+
+        if (bookRoom("Deluxe Room")) {
+            System.out.println("Booking successful.");
+        } else {
+            System.out.println("Booking failed. No rooms available.");
+        }
+
+        // Display inventory after booking
+        System.out.println("\nUpdated Room Inventory:");
         displayRooms();
     }
 
@@ -39,6 +52,27 @@ public class HotelBookingManagementSystem {
 
         for (String roomType : roomInventory.keySet()) {
             System.out.println(roomType + " : " + roomInventory.get(roomType) + " rooms available");
+        }
+    }
+
+    // UC3 — Centralized Booking Logic
+    static boolean bookRoom(String roomType) {
+
+        if (!roomInventory.containsKey(roomType)) {
+            System.out.println("Invalid room type.");
+            return false;
+        }
+
+        int availableRooms = roomInventory.get(roomType);
+
+        if (availableRooms > 0) {
+
+            roomInventory.put(roomType, availableRooms - 1);
+            return true;
+
+        } else {
+
+            return false;
         }
     }
 }
